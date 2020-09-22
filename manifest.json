@@ -1,0 +1,7 @@
+{
+  "name": "jot",
+  "id": "878334334829506664",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html"
+}
