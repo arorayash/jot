@@ -25,9 +25,16 @@ class App extends React.Component {
   };
 
   onSearch = (event) => {
-    console.log(event.target.value);
     parent.postMessage(
       { pluginMessage: { type: "search", query: event.target.value } },
+      "*"
+    );
+  };
+
+  onType = (event) => {
+    console.log("onType onChange", event.target.value);
+    parent.postMessage(
+      { pluginMessage: { type: "type", query: event.target.value } },
       "*"
     );
   };
@@ -35,7 +42,13 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        {/* <img src={require('./logo.svg')} /> */}
         <input onChange={this.onSearch} />
+        <textarea onChange={this.onType} />
+        {/* <h2>Rectangle Creator</h2>
+      <p>Count: <input ref={this.countRef} /></p>
+      <button id="create" onClick={this.onCreate}>Create</button>
+      <button onClick={this.onCancel}>Cancel</button> */}
       </div>
     );
   }

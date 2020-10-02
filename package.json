@@ -5,7 +5,7 @@
   "main": "code.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "start": "tsc -p tsconfig.json --watch"
+    "start": "webpack --mode=development --watch"
   },
   "author": "",
   "license": "",
