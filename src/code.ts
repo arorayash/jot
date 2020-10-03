@@ -8,6 +8,21 @@
 // This shows the HTML page in "ui.html".
 figma.showUI(__html__);
 
+const findInstance = () => {
+  const searchResultNodes = figma.currentPage.findAll((n) => {
+    if (n.name == "ListItem") return true;
+  });
+  console.log(searchResultNodes);
+  const componentNode = searchResultNodes[0];
+  if (componentNode.type == "COMPONENT") {
+    const instance = componentNode.createInstance();
+    figma.currentPage.appendChild(instance);
+    return instance.children.filter((n) => n.type == "TEXT")[0];
+  }
+};
+
+const instance = findInstance();
+
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
@@ -32,9 +47,22 @@ figma.ui.onmessage = (msg) => {
     const searchResultNodes = figma.currentPage.findAll((n) => {
       if (n.type === "TEXT") return n.characters.includes(msg.query);
     });
-    console.log(searchResultNodes, msg.query);
+    console.log("Search", searchResultNodes, msg.query);
     // figma.currentPage.selection = searchResultNodes;
     figma.viewport.scrollAndZoomIntoView(searchResultNodes);
+  }
+
+  if (msg.type === "type") {
+    // const nodes: SceneNode[] = [];
+
+    console.log(instance);
+    if (instance.type === "TEXT") {
+      figma.loadFontAsync({ family: "Inter", style: "Regular" }).then(() => {
+        instance.characters = msg.query;
+      });
+    }
+    // figma.currentPage.selection = searchResultNodes;
+    // figma.viewport.scrollAndZoomIntoView(searchResultNodes);
   }
 
   // Make sure to close the plugin when you're done. Otherwise the plugin will
